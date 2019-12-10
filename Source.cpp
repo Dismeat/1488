@@ -1,9 +1,11 @@
+#include "Keeper.h"
+
 using std::cout;
 using std::cin;
 using std::endl;
 
 int main() {
-	String str;//Прописать в h u cpp
+	String str;
 	Keeper kpr;
 	int ch;
 	bool flag = true;
@@ -32,8 +34,8 @@ int main() {
 				kpr += tmp;
 
 			}
-			catch () {
-				cout << () << endl;//Через исключения выведем о переполеннии списка при всех 8
+			catch (exceptions &e) {
+				cout << e.what() << endl;
 			}
 			break;
 		case 2:
@@ -45,8 +47,8 @@ int main() {
 				try {
 					kpr.remove(--ch);
 				}
-				catch () {
-					cout <<  << endl;//Вывод об отсутствии оной
+				catch (exceptions &e) {
+					cout << e.what() << endl;
 				}
 			}
 			break;
@@ -88,8 +90,8 @@ int main() {
 			try {
 				kpr.print(t_H, t_M);
 			}
-			catch () {
-				cout <<  << endl;// Исключение - ошибка - отсутсвие рейсов
+			catch (exceptions& e) {
+				cout << e.what() << endl;
 			}
 		}
 			break;
