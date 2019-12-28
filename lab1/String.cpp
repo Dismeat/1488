@@ -1,13 +1,13 @@
 #include "String.h"
 
 String::String() : str(nullptr), len(0) {}
-String::String(const char *str) {
+String::String(const char* str) {
 	create(str);
 }
-String::String(const String &Obj) {
+String::String(const String& Obj) {
 	create(Obj.str);
 }
-String::String(String &&Obj) {
+String::String(String&& Obj) {
 	str = Obj.str;
 	len = Obj.len;
 	Obj.str = nullptr;
@@ -21,14 +21,14 @@ String& String::operator=(const char* str) {
 	create(str);
 	return *this;
 }
-String& String::operator=(const String &Obj) {
+String& String::operator=(const String& Obj) {
 	if (this != &Obj) {
 		clear();
 		create(Obj.str);
 	}
 	return *this;
 }
-String& String::operator=(String &&Obj) noexcept {
+String& String::operator=(String&& Obj) noexcept {
 	if (this != &Obj) {
 		delete[] str;
 		str = Obj.str;
@@ -39,7 +39,8 @@ String& String::operator=(String &&Obj) noexcept {
 	return *this;
 }
 
-bool operator==(const String &Obj1, const String &Obj2) {
+
+bool operator==(const String& Obj1, const String& Obj2) {
 	if (&Obj1 == &Obj2)
 		return true;
 	if (Obj1.len != Obj2.len)
@@ -50,23 +51,33 @@ bool operator==(const String &Obj1, const String &Obj2) {
 	return true;
 }
 
-bool operator<(const String &Obj1, const String &Obj2) {
+bool operator<(const String& Obj1, const String& Obj2) {
 	int i;
 	int len = min(Obj1.len, Obj2.len);
+	char c, d;
+
 	for (i = 0; i < len; ++i) {
-		if (uppercase(Obj1.str[i]) == uppercase(Obj2.str[i])) {
+		c = Obj1.str[i];
+		d = Obj2.str[i];
+		if (int(c) > 96 && int(d) < 123)
+			c = char(int(c) - 32);
+
+		if (int(c) > 96 && int(d) < 123)
+			d = char(int(d) - 32);
+
+		if (c == d) {
 			if (Obj1.str[i] < Obj2.str[i])
 				return true;
 			else if (Obj1.str[i] > Obj2.str[i])
 				return false;
 		}
-		else if (uppercase(Obj1.str[i]) < uppercase(Obj2.str[i]))
+		else if (c < d)
 			return true;
 	}
 	return (Obj1.len < Obj2.len) ? true : false;
 }
 
-void move(String &str1, String &str2) {
+void move(String& str1, String& str2) {
 	str1.clear();
 	str1.len = str2.len;
 	str1.str = str2.str;
@@ -74,7 +85,7 @@ void move(String &str1, String &str2) {
 	str2.len = 0;
 }
 
-std::istream& operator>>(std::istream &is, String &Obj) {
+std::istream& operator>>(std::istream& is, String& Obj) {
 	int i;
 	char c[MAX_SIZE];
 	Obj.clear();
@@ -83,7 +94,7 @@ std::istream& operator>>(std::istream &is, String &Obj) {
 	Obj.create(c);
 	return is;
 }
-std::ostream& operator<<(std::ostream &os, const String &Obj) {
+std::ostream& operator<<(std::ostream& os, const String& Obj) {
 	if (Obj.str) os << Obj.str;
 	else os << 'o';
 	return os;
@@ -103,4 +114,17 @@ void String::clear() {
 	delete[] str;
 	str = nullptr;
 	len = 0;
+}
+
+
+int String::_strlen(const char* strt) {
+	int i = 0;
+	if (strt)
+		while (strt[i] != '\0') ++i;
+	return i;
+}
+
+void String::_strcpy(char* strt1, const char* strt2, int N) {
+	for (int i = 0; i < N; ++i)
+		strt1[i] = strt2[i];
 }

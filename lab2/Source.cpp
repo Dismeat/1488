@@ -12,7 +12,9 @@ using std::endl;
 
 using std::ifstream;
 
-bool check_sep(const char c, const char* sp);
+bool check_sep(const char c, const char* sp););//Проверка на букву, а не на другой символ разделитель(проходим по массиву символов и цифр)
+//Если не равно, то возвращаем тру, если символ равен какому-то эл-ту массива, возвращаем фалсе
+
 
 int main() {
 
