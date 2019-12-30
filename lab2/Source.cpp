@@ -12,60 +12,62 @@ using std::endl;
 
 using std::ifstream;
 
-bool check_sep(const char c, const char* sp););//Проверка на букву, а не на другой символ разделитель(проходим по массиву символов и цифр)
-//Если не равно, то возвращаем тру, если символ равен какому-то эл-ту массива, возвращаем фалсе
-
+bool check_sep(const char c, const char* sp);
 
 int main() {
+	int8_t c;
+	uint32_t count = 0;
+	uint32_t countWord = 0;
+	uint32_t countadd = 0;
+	int n = 0;//Номер элемента файла для чтения
+	int a = -1;
+	//Цикл с защитой от вытаскивание флешки топорным методом.Я бы сказал псевдовариантом.
+	//Если флешка вытащена,мы при открытии,проверке,закрытии и это в цикле - увидем это.
+   do {
 
-	ifstream in("in.txt");
+	   ifstream in("in.txt");
 
-	//Блок проверки открытия файла
+	    //Блок проверки открытия файла
 
-	if (!in.is_open()) {
+	   if (!in.is_open()) {
 
 		cout << "Error: file is not opened" << endl;
 
 		in.close();
 
-		return 0;
+		break;
+	   }
 
-	}
+	   //Цикл поиска текущего элемента с считываемого файла
+	   do
+	   {
+	     c = in.get();
+		 a++;
+	   } while (a != n);
 
-	//Чтение файла из файлового потока
+	   a = -1;
 
-	int8_t c;
-	uint32_t count = 0;
-	uint32_t countWord = 0;
+	   if(!check_sep(c, sep)) {
 
-	do {
+		++count;
 
-		c = in.get();
+	   }
+	   else {
+		   count = 0;
+	   }
+	   if (count > 4) {
 
-		if (!check_sep(c, sep)) {
+		++countWord;
+		count = 0;
+	   }
 
-			++count;
+	   n++;
+	   in.close();
+   }while (c != EOF);
 
-		}
-		else {
+	cout << "Words were found with less than 5 letters: " << countWord << endl;
 
-			if (count > 4) {
 
-				++countWord;
-
-			}
-
-			count = 0;
-
-		}
-
-	} while (c != EOF);
-
-	cout << "Words with less than 5 letters: " << countWord << endl;
-
-	in.close();
-
-	return 0;
 
 }
 
